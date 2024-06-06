@@ -5,6 +5,7 @@ let subBoxes = document.querySelectorAll('.sub-box');
 const overlay = document.querySelector('.overlay');
 const restartButton = document.querySelector('.restart-button');
 const message = document.querySelector('.message');
+const test = document.querySelector('.test');
 
 const winCombinations = [
   [0, 1, 2],
