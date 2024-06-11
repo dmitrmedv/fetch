@@ -1,6 +1,5 @@
 const buttons = document.querySelector('.buttons');
 const display = document.querySelector('.display');
-
 buttons.addEventListener('click', onClick);
 
 let a = null;
@@ -12,15 +11,17 @@ function onClick(evn) {
   if (evn.target === evn.currentTarget) {
     return;
   }
-  if (display.textContent === '0') {
-    display.textContent = '';
-  }
-  if (evn.target.textContent === '.' && display.textContent.includes('.')) {
-    return;
+
+  if (evn.target.textContent === '.') {
+    if (display.textContent.includes('.')) {
+      display.textContent = '0.';
+      return;
+    }
+    display.textContent = display.textContent + '.';
   }
 
   if (evn.target.classList.contains('number')) {
-    if (!newNumber) {
+    if (!newNumber || display.textContent === '0') {
       display.textContent = '';
       newNumber = true;
     }
@@ -30,9 +31,13 @@ function onClick(evn) {
     a = '';
     display.textContent = '0';
   }
-  if (evn.target.textContent === 'DEL' && display.textContent.length) {
+  if (evn.target.textContent === 'DEL' && display.textContent !== '0') {
     let arr = display.textContent.split('');
     arr.pop();
+    if (arr.length === 0) {
+      display.textContent = '0';
+      return;
+    }
     display.textContent = arr.join('');
   }
   if (evn.target.textContent === '+/-' && display.textContent) {
@@ -56,25 +61,31 @@ function onClick(evn) {
       case '+':
         newNumber = false;
         a = a + b;
-        display.textContent = a;
+        Number.isInteger(a) ? a : (a = a.toFixed(9));
+        display.textContent = Number(a);
         b = 0;
         break;
       case '-':
         newNumber = false;
         a = a - b;
-        display.textContent = a;
+        Number.isInteger(a) ? a : (a = a.toFixed(9));
+        display.textContent = Number(a);
         b = 0;
         break;
       case 'x':
         newNumber = false;
         a = a * b;
-        display.textContent = a;
+        Number.isInteger(a) ? a : (a = a.toFixed(9));
+        display.textContent = Number(a);
         b = 0;
         break;
       case '/':
         a = a / b;
+        Number.isInteger(a) ? a : (a = a.toFixed(9));
+        console.log(Number.isInteger(a));
         newNumber = false;
-        display.textContent = a;
+        display.textContent = Number(a);
+        console.log(a);
         b = 0;
         break;
     }
