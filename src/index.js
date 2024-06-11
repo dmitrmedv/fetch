@@ -7,17 +7,53 @@ let b = null;
 let operation = '';
 let newNumber = true;
 
+const buttonsRef = [
+  '%',
+  'CE',
+  'DEL',
+  '/',
+  '7',
+  '8',
+  '9',
+  'x',
+  '4',
+  '5',
+  '6',
+  '-',
+  '1',
+  '2',
+  '3',
+  '+',
+  '+/-',
+  '0',
+  '.',
+  '=',
+];
+
+function getMurckup() {
+  return buttonsRef
+    .map(item => {
+      return !isNaN(Number(item))
+        ? `<button type='button' class="number">${item}</button>`
+        : `<button type='button'>${item}</button>`;
+    })
+    .join('');
+}
+
+console.log();
+
+buttons.innerHTML = getMurckup();
 function onClick(evn) {
   if (evn.target === evn.currentTarget) {
     return;
   }
 
   if (evn.target.textContent === '.') {
-    if (display.textContent.includes('.')) {
-      display.textContent = '0.';
-      return;
-    }
-    display.textContent = display.textContent + '.';
+    // if (display.textContent.includes('.')) {
+    //   display.textContent = '0.';
+    //   return;
+    // }
+    // display.textContent = display.textContent + '.';
   }
 
   if (evn.target.classList.contains('number')) {
@@ -49,7 +85,12 @@ function onClick(evn) {
     display.textContent = a;
   }
 
-  if (evn.target.classList.contains('operations')) {
+  if (
+    evn.target.textContent === '+' ||
+    evn.target.textContent === '-' ||
+    evn.target.textContent === '*' ||
+    evn.target.textContent === '/'
+  ) {
     a = Number(display.textContent);
     newNumber = false;
     operation = evn.target.textContent;
