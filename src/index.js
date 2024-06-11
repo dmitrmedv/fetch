@@ -2,15 +2,15 @@ const buttons = document.querySelector('.buttons');
 const display = document.querySelector('.display');
 buttons.addEventListener('click', onClick);
 
-let a = null;
-let b = null;
+let a = 0;
+let resolt = 0;
 let operation = '';
-let newNumber = true;
+let newNumber = false;
 
 const buttonsRef = [
-  '%',
   'CE',
   'DEL',
+  '%',
   '/',
   '7',
   '8',
@@ -33,102 +33,98 @@ const buttonsRef = [
 function getMurckup() {
   return buttonsRef
     .map(item => {
-      return !isNaN(Number(item))
-        ? `<button type='button' class="number">${item}</button>`
-        : `<button type='button'>${item}</button>`;
+      if (!isNaN(Number(item))) {
+        return `<button type='button' class="number button">${item}</button>`;
+      } else if (['/', '+', '-', 'x'].includes(item)) {
+        return `<button type='button' class="operation button">${item}</button>`;
+      } else {
+        return `<button type='button' class="${item} button">${item}</button>`;
+      }
     })
     .join('');
 }
 
-console.log();
-
 buttons.innerHTML = getMurckup();
-function onClick(evn) {
-  if (evn.target === evn.currentTarget) {
+
+function onClick(e) {
+  if (e.target === e.currentTarget) {
     return;
   }
 
-  if (evn.target.textContent === '.') {
-    // if (display.textContent.includes('.')) {
-    //   display.textContent = '0.';
-    //   return;
-    // }
-    // display.textContent = display.textContent + '.';
-  }
-
-  if (evn.target.classList.contains('number')) {
-    if (!newNumber || display.textContent === '0') {
-      display.textContent = '';
-      newNumber = true;
-    }
-    display.textContent += evn.target.textContent;
-  }
-  if (evn.target.textContent === 'CE') {
-    a = '';
+  if (resolt === Infinity || isNaN(resolt)) {
     display.textContent = '0';
+    resolt = 0;
+    return;
   }
-  if (evn.target.textContent === 'DEL' && display.textContent !== '0') {
-    let arr = display.textContent.split('');
-    arr.pop();
-    if (arr.length === 0) {
-      display.textContent = '0';
-      return;
+
+  if (e.target.classList.contains('number')) {
+    if (display.textContent === '0' || newNumber) {
+      display.textContent = '';
+      newNumber = false;
     }
-    display.textContent = arr.join('');
-  }
-  if (evn.target.textContent === '+/-' && display.textContent) {
-    a = Number(display.textContent) * -1;
-    display.textContent = a;
-  }
-  if (evn.target.textContent === '%' && display.textContent) {
-    a = Number(display.textContent) / 100;
-    display.textContent = a;
+    display.textContent += e.target.textContent;
   }
 
-  if (
-    evn.target.textContent === '+' ||
-    evn.target.textContent === '-' ||
-    evn.target.textContent === '*' ||
-    evn.target.textContent === '/'
-  ) {
+  if (e.target.classList.contains('operation')) {
+    operation = e.target.textContent;
     a = Number(display.textContent);
-    newNumber = false;
-    operation = evn.target.textContent;
+    newNumber = true;
   }
 
-  if (evn.target.textContent === '=' && a) {
-    b = Number(display.textContent);
+  if (e.target.textContent === '=') {
+    newNumber = true;
     switch (operation) {
-      case '+':
-        newNumber = false;
-        a = a + b;
-        Number.isInteger(a) ? a : (a = a.toFixed(9));
-        display.textContent = Number(a);
-        b = 0;
-        break;
       case '-':
-        newNumber = false;
-        a = a - b;
-        Number.isInteger(a) ? a : (a = a.toFixed(9));
-        display.textContent = Number(a);
-        b = 0;
+        resolt = a - Number(display.textContent);
+        display.textContent = Number(resolt.toFixed(8));
         break;
-      case 'x':
-        newNumber = false;
-        a = a * b;
-        Number.isInteger(a) ? a : (a = a.toFixed(9));
-        display.textContent = Number(a);
-        b = 0;
+      case '+':
+        resolt = a + Number(display.textContent);
+        display.textContent = Number(resolt.toFixed(8));
         break;
       case '/':
-        a = a / b;
-        Number.isInteger(a) ? a : (a = a.toFixed(9));
-        console.log(Number.isInteger(a));
-        newNumber = false;
-        display.textContent = Number(a);
-        console.log(a);
-        b = 0;
+        resolt = a / Number(display.textContent);
+        if (resolt === Infinity || isNaN(resolt)) {
+          display.textContent = 'error';
+          return;
+        }
+        display.textContent = Number(resolt.toFixed(8));
+        break;
+      case 'x':
+        resolt = a * Number(display.textContent);
+        display.textContent = Number(resolt.toFixed(8));
         break;
     }
+  }
+
+  switch (e.target.textContent) {
+    case 'DEL':
+      let arr = display.textContent.split('');
+      arr.pop();
+      if (arr.length === 0) {
+        display.textContent = '0';
+        return;
+      }
+      display.textContent = arr.join('');
+      break;
+
+    case 'CE':
+      display.textContent = '0';
+      break;
+
+    case '%':
+      display.textContent /= 100;
+      break;
+
+    case '+/-':
+      display.textContent *= -1;
+      break;
+
+    case '.':
+      if (display.textContent.includes('.')) {
+        return;
+      }
+      display.textContent += '.';
+      break;
   }
 }
