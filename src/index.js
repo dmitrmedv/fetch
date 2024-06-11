@@ -128,3 +128,7 @@ function onClick(e) {
       break;
   }
 }
+
+function fix(res) {
+  return Math.floor(res).toString().length - 8;
+}
