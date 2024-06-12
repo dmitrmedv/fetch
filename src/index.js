@@ -127,5 +127,4 @@ function onClick(e) {
       display.textContent += '.';
       break;
   }
-  console.log(1111);
 }
