@@ -1,130 +1,55 @@
-const buttons = document.querySelector('.buttons');
-const display = document.querySelector('.display');
-buttons.addEventListener('click', onClick);
+const list = document.querySelector('.list');
+// const loadMoreButton = document.querySelector('.load-more');
+const counter = document.querySelector('.counter');
+const guard = document.querySelector('.js-guard');
 
-let a = 0;
-let resolt = 0;
-let operation = '';
-let newNumber = false;
+const BASE_URL = 'https://rickandmortyapi.com/api/character';
 
-const buttonsRef = [
-  'CE',
-  'DEL',
-  '%',
-  '/',
-  '7',
-  '8',
-  '9',
-  'x',
-  '4',
-  '5',
-  '6',
-  '-',
-  '1',
-  '2',
-  '3',
-  '+',
-  '+/-',
-  '0',
-  '.',
-  '=',
-];
+const options = {
+  root: null,
+  rootMargin: '200px',
+};
+let observer = new IntersectionObserver(loadMore, options);
+let page = 1;
 
-function getMurckup() {
-  return buttonsRef
-    .map(item => {
-      if (!isNaN(Number(item))) {
-        return `<button type='button' class="number button">${item}</button>`;
-      } else if (['/', '+', '-', 'x'].includes(item)) {
-        return `<button type='button' class="operation button">${item}</button>`;
-      } else {
-        return `<button type='button' class="${item} button">${item}</button>`;
-      }
-    })
-    .join('');
+getCharacter().then(data => {
+  list.insertAdjacentHTML('beforeend', makeRander(data));
+
+  observer.observe(guard);
+});
+
+function loadMore(entries) {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      page += 1;
+      getCharacter(page).then(data => {
+        list.insertAdjacentHTML('beforeend', makeRander(data));
+        if (data.info.pages === page) {
+          observer.unobserve(guard);
+        }
+      });
+    }
+  });
 }
 
-buttons.innerHTML = getMurckup();
-
-function onClick(e) {
-  if (e.target === e.currentTarget) {
-    return;
-  }
-
-  if (resolt === Infinity || isNaN(resolt)) {
-    display.textContent = '0';
-    resolt = 0;
-    return;
-  }
-
-  if (e.target.classList.contains('number')) {
-    if (display.textContent === '0' || newNumber) {
-      display.textContent = '';
-      newNumber = false;
+function getCharacter() {
+  return fetch(`${BASE_URL}?page=${page}`).then(resp => {
+    if (!resp.ok) {
+      throw new Error(resp.statusText);
     }
-    display.textContent += e.target.textContent;
-  }
+    return resp.json();
+  });
+}
 
-  if (e.target.classList.contains('operation')) {
-    operation = e.target.textContent;
-    a = Number(display.textContent);
-    newNumber = true;
-  }
+function makeRander(data) {
+  counter.innerHTML = `<p>${page} of ${data.info.pages}</p>`;
 
-  if (e.target.textContent === '=') {
-    newNumber = true;
-    switch (operation) {
-      case '-':
-        resolt = a - Number(display.textContent);
-        display.textContent = Number(resolt.toFixed(8));
-        break;
-      case '+':
-        resolt = a + Number(display.textContent);
-        display.textContent = Number(resolt.toFixed(8));
-        break;
-      case '/':
-        resolt = a / Number(display.textContent);
-        if (resolt === Infinity || isNaN(resolt)) {
-          display.textContent = 'error';
-          return;
-        }
-        display.textContent = Number(resolt.toFixed(8));
-        break;
-      case 'x':
-        resolt = a * Number(display.textContent);
-        display.textContent = Number(resolt.toFixed(8));
-        break;
-    }
-  }
-
-  switch (e.target.textContent) {
-    case 'DEL':
-      let arr = display.textContent.split('');
-      arr.pop();
-      if (arr.length === 0) {
-        display.textContent = '0';
-        return;
-      }
-      display.textContent = arr.join('');
-      break;
-
-    case 'CE':
-      display.textContent = '0';
-      break;
-
-    case '%':
-      display.textContent /= 100;
-      break;
-
-    case '+/-':
-      display.textContent *= -1;
-      break;
-
-    case '.':
-      if (display.textContent.includes('.')) {
-        return;
-      }
-      display.textContent += '.';
-      break;
-  }
+  return data.results
+    .map(({ id, name, image }) => {
+      return `<li class="card" data-id=${id}>
+                <img src=${image} alt=${name} />
+                <p class="name">${name}</p>
+              </li>`;
+    })
+    .join('');
 }
