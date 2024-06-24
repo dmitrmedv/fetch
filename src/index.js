@@ -1,55 +1,66 @@
-const list = document.querySelector('.list');
-// const loadMoreButton = document.querySelector('.load-more');
-const counter = document.querySelector('.counter');
-const guard = document.querySelector('.js-guard');
+import axios from 'axios';
 
-const BASE_URL = 'https://rickandmortyapi.com/api/character';
+const breedSelect = document.querySelector('.breed-select');
+const loader = document.querySelector('.loader');
+const error = document.querySelector('.error');
+const catInfo = document.querySelector('.cat-info');
 
-const options = {
-  root: null,
-  rootMargin: '200px',
-};
-let observer = new IntersectionObserver(loadMore, options);
-let page = 1;
+const BASE_URL = 'https://api.thecatapi.com/v1';
 
-getCharacter().then(data => {
-  list.insertAdjacentHTML('beforeend', makeRander(data));
+axios.defaults.headers.common['x-api-key'] =
+  'live_OIZnGbXg1x62BNUsObNp1IfZ3W3vdGtkswEVxumElZ87RP74YaZYIgFJyVUMoK7P';
 
-  observer.observe(guard);
-});
+error.hidden = true;
+breedSelect.hidden = true;
 
-function loadMore(entries) {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      page += 1;
-      getCharacter(page).then(data => {
-        list.insertAdjacentHTML('beforeend', makeRander(data));
-        if (data.info.pages === page) {
-          observer.unobserve(guard);
-        }
-      });
-    }
-  });
+getOptions();
+
+breedSelect.addEventListener('change', onChange);
+
+function onChange(e) {
+  getCatInfo(e.target.value);
 }
 
-function getCharacter() {
-  return fetch(`${BASE_URL}?page=${page}`).then(resp => {
-    if (!resp.ok) {
-      throw new Error(resp.statusText);
-    }
-    return resp.json();
-  });
+function getOptions() {
+  axios
+    .get(`${BASE_URL}/breeds`)
+    .then(({ data }) => {
+      breedSelect.hidden = false;
+      loader.hidden = true;
+      breedSelect.innerHTML = makeOptions(data);
+    })
+    .catch(() => {
+      loader.hidden = true;
+      error.hidden = false;
+    });
 }
 
-function makeRander(data) {
-  counter.innerHTML = `<p>${page} of ${data.info.pages}</p>`;
+function getCatInfo(breed) {
+  axios
+    .get(`${BASE_URL}/images/search?breed_ids=${breed}`)
+    .then(({ data }) => {
+      let { name, description, temperament } = data[0].breeds[0];
+      let { url } = data[0];
+      catInfo.innerHTML = makeCard({ name, description, temperament, url });
+    })
+    .catch(error => {
+      console.log(error);
+    });
+}
 
-  return data.results
-    .map(({ id, name, image }) => {
-      return `<li class="card" data-id=${id}>
-                <img src=${image} alt=${name} />
-                <p class="name">${name}</p>
-              </li>`;
+function makeOptions(data) {
+  return data
+    .map(({ name, id }) => {
+      return `<option value=${id}>${name}</option>`;
     })
     .join('');
+}
+
+function makeCard({ name, description, temperament, url }) {
+  return `<div class="cover"><img src=${url} alt=${name} /></div>
+        <div class="description">
+            <h2>${name}</h2>
+             <p>${description}</p>
+             <p>temperament: <span class="temperament">${temperament}</span></p>
+        </div>`;
 }
