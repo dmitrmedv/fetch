@@ -1,26 +1,11 @@
-.cat-info {
-  display: flex;
-}
-
-.cover {
-  width: 500px;
-  background-color: #969696;
-}
-
-.cover img {
+.search-form {
   width: 100%;
-  display: block;
+  height: 100px;
+  background-color: #3f57b3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.description {
-  margin-left: 10px;
-  width: 600px;
-}
-
-.cat-info {
-  margin-top: 10px;
-}
-
-.temperament {
-  font-weight: bold;
+.search-wrapper {
 }
