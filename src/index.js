@@ -1,6 +1,6 @@
 import UnsplashAPI from './api';
 import Masonry from 'masonry-layout';
-import InfiniteScroll from 'infinite-scroll';
+// import InfiniteScroll from 'infinite-scroll';
 
 const gallery = document.querySelector('.gallery');
 const card = document.querySelector('.card');
@@ -32,8 +32,8 @@ function onSubmit(even) {
   });
 }
 
-let infScroll = new InfiniteScroll('.gallery', {
-  path: '.pagination__next',
-  append: '.post',
-  history: false,
-});
+// let infScroll = new InfiniteScroll('.gallery', {
+//   path: '.pagination__next',
+//   append: '.post',
+//   history: false,
+// });
