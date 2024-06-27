@@ -1,40 +1,39 @@
-// import UnsplashAPI from './api';
+import UnsplashAPI from './api';
+import Masonry from 'masonry-layout';
+import InfiniteScroll from 'infinite-scroll';
 
-const searchForm = document.querySelector('.js-search-form');
-const searchButton = document.querySelector('.js-search-button');
-const box = document.querySelector('.box');
+const gallery = document.querySelector('.gallery');
+const card = document.querySelector('.card');
 
-const services = [
-  'абонслужба',
-  'ЕХЗ',
-  'Коржов',
-  'група з  приєднань',
-  'СЕУГиДВ',
-  'СКБСГ',
-  'СКПГА',
-  'СТОВГ',
-  'СУГ',
-  'Сусуловський',
-  'Фін. відділ',
-  'Юр. відділ',
-  'ВТВ',
-  'Гол.інж',
-  'Манишев',
-  'ГРП',
-  'Боєжов',
-  'Ревіз. відділ',
-  'АДС',
-  'ГВіП',
-];
+const form = document.querySelector('.search-form');
 
-// const unsplashApi = new UnsplashAPI();
+form.addEventListener('submit', onSubmit);
 
-// function makerMurckup(data) {
-//   return data
-//     .map(({ alt_description, urls: { regular } }) => {
-//       return `<img src=${regular} alt=${alt_description}>`;
-//     })
-//     .join('');
-// }
+const unsplashAPI = new UnsplashAPI();
 
-// unsplashApi.getImgs().then(data => (box.innerHTML = makerMurckup(data)));
+function makeCard(data) {
+  console.log(data);
+  return data
+    .map(({ urls: { small }, alt_description }) => {
+      return `<div class="photo-card">
+              <img src=${small} alt=${alt_description} loading="lazy" />
+            </div>`;
+    })
+    .join('');
+}
+
+function onSubmit(even) {
+  even.preventDefault();
+  unsplashAPI.query = even.target.elements.searchQuery.value;
+  even.target.reset();
+  unsplashAPI.getImgs().then(({ results }) => {
+    gallery.innerHTML = makeCard(results);
+    var msnry = new Masonry(gallery);
+  });
+}
+
+let infScroll = new InfiniteScroll('.gallery', {
+  path: '.pagination__next',
+  append: '.post',
+  history: false,
+});
