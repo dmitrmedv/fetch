@@ -11,6 +11,8 @@ form.addEventListener('submit', onSubmit);
 
 const unsplashAPI = new UnsplashAPI();
 
+let msnry;
+
 function makeCard(data) {
   console.log(data);
   return data
@@ -27,8 +29,19 @@ function onSubmit(even) {
   unsplashAPI.query = even.target.elements.searchQuery.value;
   even.target.reset();
   unsplashAPI.getImgs().then(({ results }) => {
-    gallery.innerHTML = makeCard(results);
-    var msnry = new Masonry(gallery);
+    gallery.insertAdjacentHTML('beforeend', makeCard(results));
+    if (!msnry) {
+      msnry = new Masonry(gallery, {
+        itemSelector: '.photo-card',
+        columnWidth: '.photo-card',
+        percentPosition: true,
+      });
+    } else {
+      msnry.reloadItems();
+      msnry.layout();
+    }
+    new Masonry(gallery);
+    msnry.layout();
   });
 }
 
