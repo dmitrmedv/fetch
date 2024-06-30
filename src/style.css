@@ -1,43 +1,220 @@
-.search-form {
-  /* position: fixed; */
-  /* top: 0; */
-  /* left: 0; */
-  width: 100%;
-  height: 100px;
-  background-color: #3f57b3;
+:root {
+  --font-family: 'Poppins', sans-serif;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0;
+}
+
+p {
+  padding: 0;
+  margin: 0;
+}
+
+ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.link {
+  text-decoration: none;
+}
+
+.btn {
+  border: 2px solid #263238;
+}
+
+.section {
+  width: 1378px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.header {
   display: flex;
+  margin-top: 55px;
+  margin-bottom: 55px;
   align-items: center;
-  justify-content: center;
+  text-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
 }
 
-input {
-  width: 300px;
-  height: 35px;
-  border: none;
-  padding: 10px;
+.logo {
+  padding: 8px 0;
+  font-family: var(--font-family);
+  font-weight: 400;
+  font-size: 36px;
+  letter-spacing: 0.03em;
+  text-align: center;
+  color: #000;
 }
 
-input:focus {
-  outline: none;
+.navi-menu {
+  display: flex;
+  gap: 50px;
+  align-items: center;
+  margin: 0 121px 0 228px;
 }
 
-button {
-  width: 100px;
-  height: 35px;
-  border: none;
+.navi-menu .link {
+  padding: 20px 0;
+  font-family: var(--font-family);
+  font-weight: 500;
+  font-size: 20px;
+  color: #263238;
+}
+
+.header .btn {
+  width: 312px;
+  height: 70px;
+  font-weight: 400;
+  font-size: 20px;
+  letter-spacing: 0.03em;
+  text-align: center;
+  color: #000;
+  border: 2px solid #263238;
+  border-radius: 10px;
+  box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
+  background-color: transparent;
   cursor: pointer;
 }
 
-.gallery {
-  outline: 1px solid red;
-  width: 1440px;
+.hero {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 180px;
 }
 
-/* .photo-card {
-  width: 300px;
-  height: 300px;
-}*/
+.hero .block {
+  width: 540px;
+  height: 548px;
+}
 
-.photo-card img {
-  display: block;
+.hero .img {
+  width: 654px;
+  height: 510px;
+  outline: 1px solid black;
+}
+
+.hero .title {
+  font-weight: 600;
+  font-size: 64px;
+  line-height: 1.25;
+  color: #000;
+  width: 386px;
+  margin-bottom: 40px;
+}
+
+.extra-space::before {
+  content: ' '; /* Пробіл */
+  margin-left: 120px; /* Відстань */
+}
+
+.hero .text {
+  font-family: var(--font-family);
+  font-weight: 400;
+  font-size: 24px;
+  color: #8f95a5;
+  margin-bottom: 60px;
+}
+
+.hero .btn {
+  border-radius: 10px;
+  width: 426px;
+  height: 100px;
+  background: #263238;
+  font-weight: 400;
+  font-size: 36px;
+  letter-spacing: 0.03em;
+  text-align: center;
+  color: #fff;
+  cursor: pointer;
+}
+
+.skills .btn {
+  width: 230px;
+  height: 60px;
+  border-radius: 10px;
+  background: #263238;
+  font-weight: 500;
+  font-size: 18px;
+  color: #fff;
+}
+
+.skills .item .title {
+  font-weight: 600;
+  font-size: 30px;
+  color: #263238;
+  margin-bottom: 20px;
+}
+.skills .text {
+  font-weight: 400;
+  font-size: 16px;
+  color: #8f95a5;
+  margin-bottom: 30px;
+}
+
+.skills > .title {
+  font-weight: 600;
+  font-size: 48px;
+  color: #000;
+  text-align: center;
+  margin-bottom: 60px;
+}
+
+.cards {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px;
+}
+
+.card1 {
+  border-radius: 10px;
+  width: 426px;
+  height: 947px;
+  /* outline: 1px solid black; */
+  background: #f5f5f5;
+  padding: 32px 18px;
+}
+
+.card1 .discription {
+  width: 347px;
+}
+
+.card2 {
+  border-radius: 10px;
+  width: 426px;
+  height: 579px;
+  /* outline: 1px solid black; */
+  background: #f5f5f5;
+  padding: 32px 18px;
+}
+.card3 {
+  border-radius: 10px;
+  width: 426px;
+  height: 579px;
+  /* outline: 1px solid black; */
+  background: #f5f5f5;
+  padding: 32px 18px;
+}
+
+.card4 {
+  border-radius: 10px;
+  width: 882px;
+  height: 338px;
+  /* outline: 1px solid black; */
+  background: #f5f5f5;
+  padding: 32px 18px;
+}
+
+.position {
+  position: absolute;
+  bottom: 0;
+  right: 0;
 }
