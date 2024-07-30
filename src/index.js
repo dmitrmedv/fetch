@@ -26,7 +26,9 @@ function onSubmit(e) {
     .then(() => {
       getList();
     })
-    .finally(() => e.target.reset());
+    .finally(() => {
+      e.target.reset(), e.target.elements.name.focus();
+    });
 }
 
 function render(arr) {

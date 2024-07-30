@@ -35,7 +35,7 @@
   width: 55%;
   max-height: 600px;
   overflow: auto;
-  flex-direction: column-reverse;
+  flex-direction: column;
 }
 
 .list li {
