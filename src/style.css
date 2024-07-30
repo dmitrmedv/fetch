@@ -1,0 +1,44 @@
+.container {
+  margin: 0 auto;
+  width: 768px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.form {
+  align-self: start;
+  outline: 1px solid black;
+  padding: 15px;
+  width: 300px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.form input {
+  padding: 10px;
+}
+
+.btn {
+  display: block;
+  margin: 0 auto;
+  cursor: pointer;
+}
+
+.list {
+  padding: 15px;
+  list-style: none;
+  display: flex;
+  gap: 10px;
+  margin: 0;
+  outline: 1px solid red;
+  width: 55%;
+  max-height: 600px;
+  overflow: auto;
+  flex-direction: column-reverse;
+}
+
+.list li {
+  outline: 1px solid red;
+  padding: 10px;
+}
