@@ -1,0 +1,2 @@
+fetch("http://localhost:3000/posts").then((t=>t.json())).then((t=>console.log(t)));const t={method:"POST",headers:{"Content-Type":"application/json; charset=UTF-8"},body:JSON.stringify({name:"Іванов В.І.",address:"Дерибасівська, 34",question:"перерахунок"})};fetch("http://localhost:3000/posts",t).then((t=>t.json())).then((t=>console.log(t))),fetch("http://localhost:3000/posts",t).then((t=>t.json())).then((t=>console.log(t)));
+//# sourceMappingURL=index.f004e374.js.map
