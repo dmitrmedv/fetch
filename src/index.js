@@ -1,7 +1,7 @@
 const form = document.querySelector('.form');
 const list = document.querySelector('.list');
 
-let count;
+let count = 1;
 
 function getList() {
   fetch('http://localhost:3000/letters')
@@ -9,10 +9,7 @@ function getList() {
     .then(data => {
       if (data.length !== 0) {
         count = data[data.length - 1].number + 1;
-      } else {
-        count = 1;
       }
-
       let dataSotr = data.sort((a, b) => b.number - a.number);
       list.innerHTML = render(dataSotr);
     });
