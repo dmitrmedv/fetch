@@ -1,3 +1,9 @@
 {
-  "letters": []
+  "letters": [
+    {
+      "id": "2",
+      "name": "Sergo",
+      "address": "Druga str. 2"
+    }
+  ]
 }
